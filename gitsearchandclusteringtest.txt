@@ -1,0 +1,27 @@
+from sklearn.model_selection import GridSearchCV
+knr = KNeighborsRegressor()
+
+parameters = {'n_neighbors': [5,6,7,8,9,10,11,12],
+              'weights': ['uniform', 'distance'],
+              'metric': ['minkowski', 'chebyshev', 'manhattan']
+             }
+grid =  GridSearchCV(knr, parameters)
+model = grid.fit(X, y)  
+print(model)
+predictions = cross_val_predict(model, X, y, cv=10)
+print("Explained variance:", explained_variance_score(y, predictions))
+print("Mean absolute error:", mean_absolute_error(y, predictions))
+print("R2 score:", r2_score(y, predictions))
+
+
+from sklearn import cluster
+spectral = cluster.SpectralClustering(
+        n_clusters=4, eigen_solver='arpack',
+        affinity="nearest_neighbors")
+spectral.fit(boston.data)
+
+boston_df['category'] = spectral.labels_
+boston_df['price'] = boston.target
+house_clusters = boston_df.groupby('category').mean().sort_values('price')
+house_clusters.index = ['low', 'mid_low', 'mid_high', 'high']
+house_clusters[['price', 'CRIM', 'RM', 'AGE', 'DIS']]

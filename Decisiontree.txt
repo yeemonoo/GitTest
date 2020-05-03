@@ -1,0 +1,25 @@
+from sklearn.ensemble import RandomForestClassifier
+rf=RandomForestClassifier(n_estimators=10,random_state=0)
+rf.fit(X_train,y_train)
+rf.score(X_test,y_test)
+
+from sklearn.tree import DecisionTreeClassifier
+rf= DecisionTreeClassifier(max_depth=7,random_state=0)
+rf.fit(X_train,y_train)
+rf.score(X_test,y_test)
+
+tree=DecisionTreeClassifier(max_depth=7,random_state=0)
+tree.fit(X,y)
+tree.score(X,y)
+
+%matplotlib inline
+pd.Series(tree.feature_importances_,index=X.columns).plot.barh(figsize=(18,7));
+from sklearn.tree import export_graphviz
+import sys, subprocess
+from IPython.display import Image
+
+export_graphviz(tree, feature_names=X.columns, class_names=['failure','success'],
+                out_file='ml-good.dot', impurity=False, filled=True)
+subprocess.check_call([sys.prefix+'/bin/dot','-Tpng','ml-good.dot',
+                       '-o','ml-good.png'])
+Image('ml-good.png')
