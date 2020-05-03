@@ -1,0 +1,20 @@
+import  pandas as pd
+import warnings
+warnings.simplefilter("ignore")
+fname="Learning about Humans learning ML.csv"
+humans=pd.read_csv(fname)
+humans.drop('Timestamp', axis=1,inplace=True)
+humans['Education']=(humans[
+                'Years of post-secondary education(e.g. BA=4;Ph.D.=10)']
+                                      .str.replace(r'.*=','')
+                                      .astype(int))
+humans.drop( 'Years of post-secondary education(e.g. BA=4;Ph.D.=10)',
+                        axis=1,inplace=True)
+humans.head(4)
+humans.describe(include=['object','int','float'])
+human_dummies=pd.get_dummies(humans)
+list(human_dummies.columns)
+x=human_dummies.drop("How successful has this tutorial been so far?",axis=1)
+y=human_dummies["How successful has this tutorial been so far?"] >= 8
+y.head()
+x.iloc[:5,:5]
